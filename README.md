@@ -39,9 +39,64 @@ This project requires two terminals to run simultaneously:
     * Sign up for a free [ngrok Account](https://dashboard.ngrok.com/signup).
     * Follow their instructions to [install ngrok and add your auth token](https://ngrok.com/docs/getting-started/) to your machine.
 
+
+
 ### Step 2: Install Python Libraries
 
 Open your terminal and install the necessary libraries:
 
-```bash
-pip install twilio flask pandas
+bash
+```pip install twilio flask pandas```
+
+### Step 3: Prepare Your Input File
+Name	      PhoneNumber	   Status	Feedback
+Adrenalin	1800 444 445
+AMD	      1800 425 6664	
+
+### Step 4: Configure the phones.py Script
+Open your phones.py file and find these variables at the top. This is the most important step.
+
+# 1. ENTER YOUR TWILIO CREDENTIALS HERE
+
+TWILIO_ACCOUNT_SID = "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # <-- PASTE YOUR SID HERE
+TWILIO_AUTH_TOKEN = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"    # <-- PASTE YOUR TOKEN HERE
+TWILIO_PHONE_NUMBER = "+1xxxxxxxxxx"                     # <-- PASTE YOUR TWILIO NUMBER HERE
+
+
+# 2. THIS WILL BE FILLED BY NGROK IN A LATER STEP
+
+NGROK_BASE_URL = ""                                      # <-- LEAVE THIS EMPTY FOR NOW
+
+INPUT_CSV_FILE = "input_numbers.csv"
+OUTPUT_CSV_FILE = "call_results.csv"
+
+### Step 5: Run ngrok (Terminal 1)
+Open your first terminal.
+
+The Flask app runs on port 5000 (by default). Start ngrok to create a tunnel to that port by typing:
+
+Bash
+```ngrok http 5000```
+
+ngrok will start and show you a "Forwarding" URL. Copy the https.s URL. It will look something like this:
+
+https://1a2b-3c4d-5e6f.ngrok-free.app
+
+### Step 6: Add ngrok URL to Script
+Go back to your phones.py script.
+
+Paste the ngrok URL you just copied into the NGROK_BASE_URL variable. Make sure it's in quotes.
+
+``NGROK_BASE_URL = "[https://1a2b-3c4d-5e6f.ngrok-free.app](https://1a2b-3c4d-5e6f.ngrok-free.app)"  # <-- PASTE YOUR NGROK URL HERE``
+### Step 7: Run the Autodialer (Terminal 2)
+Open a second terminal. (Leave your first ngrok terminal running!)
+
+Make sure you are in the same project directory.
+
+Run the main script:
+	`python phones.py`
+
+### Step 9: Get Your Results
+When the script is finished, it will close everything down. You can now open the call_results.csv file. It will contain your original numbers plus the final status of each call.
+
+
